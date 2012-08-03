@@ -48,7 +48,7 @@ class CountdownPlaylist (GObject.GObject, Peas.Activatable):
         iconfactory.add("mybutton", iconset)
         iconfactory.add_default()
         
-        action = Gtk.Action("CountdownPlaylist", "CountdownPlaylist",
+        action = Gtk.Action("CountdownPlaylist", "Countdown",
                             "Create a playlist for a set period of time",
                             "mybutton");
         action.connect("activate", self.countdown_playlist)
