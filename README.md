@@ -1,6 +1,8 @@
 countdown-playlist
 ==================
 
+[![Flattr Button](http://api.flattr.com/button/button-static-50x60.png "Flattr This!")](https://flattr.com/thing/1237141/fossfreedomcountdown-playlist-on-GitHub "Rhythmbox Countdown Playlist")
+
 1. DESCRIPTION
 Rhythmbox v2.9x plugin to create playlists from your music collection using keywords for a defined duration
 
