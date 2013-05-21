@@ -19,6 +19,9 @@
 
 from gi.repository import RB, Gtk, GObject, Peas
 import random, string, copy, os
+from coverart_rb3compat import ActionGroup
+from coverart_rb3compat import Action
+from coverart_rb3compat import ApplicationShell
 
 ui_string = \
 """<ui>
@@ -39,24 +42,27 @@ class CountdownPlaylist (GObject.GObject, Peas.Activatable):
     def do_activate(self):
         self.shell = self.object
         self.sp = self.shell.props.shell_player
+
         
-        action = Gtk.Action("CountdownPlaylist", "Countdown",
-                            "Create a playlist for a set period of time",
-                            "");
-        action.connect("activate", self.countdown_playlist)
-        self.action_group = Gtk.ActionGroup('CountdownPlaylistActionGroup')
-        self.action_group.add_action(action)
+        #action = Gtk.Action("CountdownPlaylist", "Countdown",
+        #                    "Create a playlist for a set period of time",
+        #                    "");
+        #action.connect("activate", self.countdown_playlist)
+        self.action_group = ActionGroup(self.shell, 'CountdownPlaylistActionGroup')
+        action = self.action_group.add_action(func=self.countdown_playlist,
+            action_name='CountdownPlaylist', label='Countdown Playlist')
+
+        self._appshell = ApplicationShell(self.shell)
+        self._appshell.add_app_menuitems(ui_string)
         
-        ui_manager = self.shell.props.ui_manager
-        ui_manager.insert_action_group(self.action_group, 0)
-        self.UI_ID = ui_manager.add_ui_from_string(ui_string)
-        ui_manager.ensure_update();
+        #ui_manager = self.shell.props.ui_manager
+        #ui_manager.insert_action_group(self.action_group, 0)
+        #self.UI_ID = ui_manager.add_ui_from_string(ui_string)
+        #ui_manager.ensure_update();
     
-    def deactivate(self):
-        ui_manager = self.shell.props.ui_manager
-        ui_manager.remove_ui(self.UI_ID)
-        ui_manager.ensure_update();
-    
+    def do_deactivate(self):
+        self._appshell.cleanup()
+        
     def createSuitablePlaylist(self, theList, Duration):
         print "createSuitablePlaylist with duration:"
 
@@ -187,7 +193,10 @@ class CountdownPlaylist (GObject.GObject, Peas.Activatable):
         return durSecs
         
     ## this is what actually gets called when we click our button ##
-    def countdown_playlist(self, event):
+    def countdown_playlist(self,a,b,c):
+        print a
+        print b
+        print c
         (ReqKeyword, ReqDur) = self.CreateGuiGetInfo()
         RequestedDuration = self.ConvertInputToDur(ReqDur)
         if not RequestedDuration:
