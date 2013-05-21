@@ -19,9 +19,9 @@
 
 from gi.repository import RB, Gtk, GObject, Peas
 import random, string, copy, os
-from coverart_rb3compat import ActionGroup
-from coverart_rb3compat import Action
-from coverart_rb3compat import ApplicationShell
+from countdown_rb3compat import ActionGroup
+from countdown_rb3compat import Action
+from countdown_rb3compat import ApplicationShell
 
 ui_string = \
 """<ui>
@@ -50,7 +50,8 @@ class CountdownPlaylist (GObject.GObject, Peas.Activatable):
         #action.connect("activate", self.countdown_playlist)
         self.action_group = ActionGroup(self.shell, 'CountdownPlaylistActionGroup')
         action = self.action_group.add_action(func=self.countdown_playlist,
-            action_name='CountdownPlaylist', label='Countdown Playlist')
+            action_name='CountdownPlaylist', label='Countdown Playlist',
+            action_type='app')
 
         self._appshell = ApplicationShell(self.shell)
         self._appshell.add_app_menuitems(ui_string)
@@ -64,7 +65,7 @@ class CountdownPlaylist (GObject.GObject, Peas.Activatable):
         self._appshell.cleanup()
         
     def createSuitablePlaylist(self, theList, Duration):
-        print "createSuitablePlaylist with duration:"
+        print("createSuitablePlaylist with duration:")
 
         tempList = copy.copy(theList)
         manList = []
@@ -101,18 +102,18 @@ class CountdownPlaylist (GObject.GObject, Peas.Activatable):
         return manList
         
     def addTracksToQueue(self, theList):
-        print "addTracksToQueue"
+        print("addTracksToQueue")
         for track in theList:
             self.shell.props.queue_source.add_entry(track[0], -1)
         
     def ClearQueue(self):
-        print "ClearQueue"
+        print("ClearQueue")
         for row in self.shell.props.queue_source.props.query_model:
             entry = row[0]
             self.shell.props.queue_source.remove_entry(entry)
         
     def CreateGuiGetInfo(self):
-        print "CreateGuiGetInfo"
+        print("CreateGuiGetInfo")
         keyword = ""
         dur = []
         dialog = Gtk.Dialog("CountdownPlaylist Specs", None, 0,
@@ -193,10 +194,7 @@ class CountdownPlaylist (GObject.GObject, Peas.Activatable):
         return durSecs
         
     ## this is what actually gets called when we click our button ##
-    def countdown_playlist(self,a,b,c):
-        print a
-        print b
-        print c
+    def countdown_playlist(self, *args):
         (ReqKeyword, ReqDur) = self.CreateGuiGetInfo()
         RequestedDuration = self.ConvertInputToDur(ReqDur)
         if not RequestedDuration:
