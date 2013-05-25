@@ -54,7 +54,8 @@ class CountdownPlaylist (GObject.GObject, Peas.Activatable):
             action_type='app')
 
         self._appshell = ApplicationShell(self.shell)
-        self._appshell.add_app_menuitems(ui_string)
+        self._appshell.insert_action_group(self.action_group)
+        self._appshell.add_app_menuitems(ui_string, 'CountdownPlaylistActionGroup')
         
         #ui_manager = self.shell.props.ui_manager
         #ui_manager.insert_action_group(self.action_group, 0)
