@@ -1,5 +1,10 @@
 # -*- Mode: python; coding: utf-8; tab-width: 4; indent-tabs-mode: nil; -*-
 #
+# IMPORTANT - WHILST THIS MODULE IS USED BY SEVERAL OTHER PLUGINS
+# THE MASTER AND MOST UP-TO-DATE IS FOUND IN THE COVERART BROWSER
+# PLUGIN - https://github.com/fossfreedom/coverart-browser
+# PLEASE SUBMIT CHANGES BACK TO HELP EXPAND THIS API
+#
 # Copyright (C) 2012 - fossfreedom
 # Copyright (C) 2012 - Agustin Carrasco
 #
@@ -19,6 +24,7 @@
 
 from gi.repository import Gtk
 from gi.repository import Gio
+from gi.repository import GLib
 import sys
 import rb
 import lxml.etree as ET
@@ -329,6 +335,11 @@ class ActionGroup(object):
     '''
     container for all Actions used to associate with menu items
     '''
+
+    # action_state
+    STANDARD=0
+    TOGGLE=1
+    
     def __init__(self, shell, group_name):
         '''
         constructor
@@ -378,15 +389,26 @@ class ActionGroup(object):
         key value of "label" is the visual menu label to display
         key value of "action_type" is the RB2.99 Gio.Action type ("win" or "app")
            by default it assumes all actions are "win" type
+        key value of "action_state" determines what action state to create
         '''
         if 'label' in args:
             label = args['label']
         else:
             label=action_name
         
+        state = ActionGroup.STANDARD            
+        if 'action_state' in args:
+            state = args['action_state']
+        
         if is_rb3(self.shell):
-            action = Gio.SimpleAction.new(action_name, None)
+            if state == ActionGroup.TOGGLE:
+                action = Gio.SimpleAction.new_stateful(action_name, None,
+                                               GLib.Variant('b', False))
+            else:
+                action = Gio.SimpleAction.new(action_name, None)
+            
             action.connect('activate', func, args)
+
             action_type = 'win'
             if 'action_type' in args:
                 if args['action_type'] == 'app':
@@ -399,9 +421,15 @@ class ActionGroup(object):
                 self.shell.props.window.add_action(action)
                 self.actiongroup.add_action(action)
         else:
-            action = Gtk.Action(label=label,
-                name=action_name,
-               tooltip='', stock_id=Gtk.STOCK_CLEAR)
+            if state == ActionGroup.TOGGLE:
+                action = Gtk.ToggleAction(label=label,
+                    name=action_name,
+                   tooltip='', stock_id=Gtk.STOCK_CLEAR)
+            else:
+                action = Gtk.Action(label=label,
+                    name=action_name,
+                   tooltip='', stock_id=Gtk.STOCK_CLEAR)
+
             action.connect('activate', func, None, args)
             self.actiongroup.add_action(action)
             
