@@ -214,18 +214,18 @@ class CountdownPlaylist (GObject.GObject, Peas.Activatable):
                 keyword.lstrip(' ')
                 for row in self.shell.props.library_source.props.base_query_model:
                     entry = row[0]
-                    keyword = string.lower(keyword)
-                    artist = string.lower(entry.get_string(RB.RhythmDBPropType.ARTIST))
-                    genre  = string.lower(entry.get_string(RB.RhythmDBPropType.GENRE))
-                    title  = string.lower(entry.get_string(RB.RhythmDBPropType.TITLE))
-                    album  = string.lower(entry.get_string(RB.RhythmDBPropType.ALBUM))
-                    album_artist  = string.lower(entry.get_string(RB.RhythmDBPropType.ALBUM_ARTIST))
-                    comment  = string.lower(entry.get_string(RB.RhythmDBPropType.COMMENT))
+                    keyword = str.lower(keyword)
+                    artist = str.lower(entry.get_string(RB.RhythmDBPropType.ARTIST))
+                    genre  = str.lower(entry.get_string(RB.RhythmDBPropType.GENRE))
+                    title  = str.lower(entry.get_string(RB.RhythmDBPropType.TITLE))
+                    album  = str.lower(entry.get_string(RB.RhythmDBPropType.ALBUM))
+                    album_artist  = str.lower(entry.get_string(RB.RhythmDBPropType.ALBUM_ARTIST))
+                    comment  = str.lower(entry.get_string(RB.RhythmDBPropType.COMMENT))
                     year  = entry.get_ulong(RB.RhythmDBPropType.YEAR)
-                    if string.find(artist, keyword) is not -1 or string.find(genre, keyword) is not -1 or \
-                            string.find(title, keyword) is not -1 or string.find(album, keyword) is not -1 or \
-                            string.find(album_artist, keyword) is not -1 or string.find(comment, keyword) is not -1 \
-                            or string.find(string.lower(str(year)), keyword) is not -1:
+                    if str.find(artist, keyword) is not -1 or str.find(genre, keyword) is not -1 or \
+                            str.find(title, keyword) is not -1 or str.find(album, keyword) is not -1 or \
+                            str.find(album_artist, keyword) is not -1 or str.find(comment, keyword) is not -1 \
+                            or str.find(str.lower(str(year)), keyword) is not -1:
                         songLocation = entry
                         songDuration = entry.get_ulong(RB.RhythmDBPropType.DURATION)
                         CountdownList.append([songLocation, songDuration])
@@ -244,4 +244,3 @@ class CountdownPlaylist (GObject.GObject, Peas.Activatable):
         self.shell.props.shell_player.stop()
         self.shell.props.shell_player.set_playing_source( self.shell.props.queue_source )
         self.shell.props.shell_player.playpause(True)
-
