@@ -1,0 +1,10 @@
+[Plugin]
+Loader=python3
+Module=countdown_playlist
+IAge=2
+Depends=rb
+Name=Countdown Playlist
+Description=Create a playlist using the specified parameters that will only play for a certain period of time.
+Authors=fossfreedom <foss.freedom@gmail.com>
+Copyright=This software is absolutely free: as in freedom, love, or beer.
+Website=https://launchpad.net/~fossfreedom

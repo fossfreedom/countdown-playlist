@@ -10,17 +10,27 @@ countdown-playlist
 ------------
 
 1. DESCRIPTION
-Rhythmbox v2.9x plugin to create playlists from your music collection using keywords for a defined duration
+Rhythmbox v2.96 and later plugin to create playlists from your music collection using keywords for a defined duration
 
 2. INSTALLATION
-Copy this directory to ~/.local/share/rhythmbox/plugins
+
+    git clone https://github.com/fossfreedom/countdown-playlist
+    cd countdown-playlist
+
+for rhythmbox versions 2.96 - 2.99.1
+    ./install.sh
+
+for rhythmbox version 3.0 and later
+
+    ./install.sh --rb3
+
 Open Rhythmbox:
 	Edit -> Plugins
 	Check Enabled next to Countdown Playlist
 
 3. USE
-Click the box on the toolbar to begin
-Add any keywords in the text box
+
+Add any keywords in the countdown-playlist window
     Separate keywords using commas!
     Leave the keyword box blank to use all the music in your library
 Give an amount of time using the Hour, Min, Sec boxes
