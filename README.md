@@ -18,6 +18,7 @@ Rhythmbox v2.96 and later plugin to create playlists from your music collection 
     cd countdown-playlist
 
 for rhythmbox versions 2.96 - 2.99.1
+
     ./install.sh
 
 for rhythmbox version 3.0 and later
